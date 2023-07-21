@@ -4,7 +4,7 @@ import { api } from '../../services/pokemon';
 
 interface pokemonDTO {
     data: {
-        count: string;
+        count: number;
         next: string | null;
         previous: string | null;
         results: {
@@ -16,16 +16,19 @@ interface pokemonDTO {
 
 interface FetchProductsAction {
     type: typeof actions.getPokemonsRequest.type;
-    // payload: {
-    //     offset: number;
-    //     limit: number;
-    // };
+    payload: {
+        offset: number;
+        limit: number;
+    };
 }
 
-function* getPokemons({}: FetchProductsAction) {
+function* getPokemons({ payload }: FetchProductsAction) {
     const { getPokemonsFailure, getPokemonsSuccess } = actions;
+    const { limit, offset } = payload;
     try {
-        const response: pokemonDTO = yield api.get('pokemon');
+        const response: pokemonDTO = yield api.get('pokemon', {
+            params: { offset, limit },
+        });
         yield put(getPokemonsSuccess({ data: response.data }));
     } catch (error) {
         yield put(getPokemonsFailure());
