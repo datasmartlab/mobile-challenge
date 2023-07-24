@@ -1,37 +1,63 @@
 import { PayloadAction } from '@reduxjs/toolkit';
 
-interface pokemonsDTO {
-    count: number;
-    next: string | null;
-    previous: string | null;
-    results: {
+export interface pokemonDTO {
+    data: {
         name: string;
-        url: string;
-    }[];
+        height: number;
+        sprites: {
+            other: {
+                dream_world: { front_default: string };
+                home: { front_default: string };
+            };
+        };
+        weight: number;
+    };
 }
+/*
+name:
+height:
+stats:{
+	0 = hp
+	1 = attack
+	2 = defense
+	3 = special-attack
+	4 = special-defense
+	5 = speed
+}
+type:{
+	1 ou 2
+}
+sprites:{
+	dream_world:{ front_default }
+}
+
+weight:  
+*/
 
 interface paginationData {
     offset: number;
     limit: number;
-    count?: number;
 }
 
-interface pokemonData {
+export interface pokemonData {
     name: string;
-    sprite: string;
-}
-interface payloadpokemonData {
-    data: pokemonsDTO;
+    height: number;
+    sprites: {
+        other: {
+            dream_world: { front_default: string };
+            home: { front_default: string };
+        };
+    };
+    weight: number;
 }
 
 export interface initialStateProps {
     loading: boolean;
-    data: { name: string; url: string }[];
-    pokemonInfo: pokemonData;
+    data: pokemonData[];
     pagination: paginationData;
 }
 
-export const reducer = {
+export const reducers = {
     getPokemonsRequest: {
         reducer: (state: initialStateProps) => {
             state.loading = false;
@@ -41,42 +67,34 @@ export const reducer = {
         },
     },
 
-    getPokemonsSuccess: {
-        reducer: (
-            state: initialStateProps,
-            action: PayloadAction<payloadpokemonData>,
-        ) => {
-            const { data } = action.payload;
-            state.data = data.results;
-            state.loading = false;
-            state.pagination.count = data.count;
-        },
-        prepare: ({ data }: payloadpokemonData) => {
-            return { payload: { data } };
-        },
+    getPokemonsSuccess: (
+        state: initialStateProps,
+        action: PayloadAction<pokemonData[]>,
+    ) => {
+        state.data = action.payload;
+        state.loading = false;
     },
 
     getPokemonsFailure: (state: initialStateProps) => {
         state.loading = false;
     },
 
-    getPokemonInfoRequest: (state: initialStateProps) => {
-        state.loading = true;
-    },
+    // getPokemonInfoRequest: (state: initialStateProps) => {
+    //     state.loading = true;
+    // },
 
-    getPokemonInfoSuccess: {
-        reducer: (
-            state: initialStateProps,
-            action: PayloadAction<{ data: pokemonData }>,
-        ) => {
-            state.pokemonInfo = action.payload.data;
-            state.loading = false;
-        },
-        prepare: ({ name, sprite }: pokemonData) => {
-            return { payload: { data: { name, sprite } } };
-        },
-    },
-    getPokemonInfoFailure: (state: initialStateProps) => {
-        state.loading = false;
-    },
+    // getPokemonInfoSuccess: {
+    //     reducer: (
+    //         state: initialStateProps,
+    //         action: PayloadAction<{ data: pokemonData }>,
+    //     ) => {
+    //         state.loading = false;
+    //     },
+    //     prepare: ({ name, sprite }: pokemonData) => {
+    //         return { payload: { data: { name, sprite } } };
+    //     },
+    // },
+    // getPokemonInfoFailure: (state: initialStateProps) => {
+    //     state.loading = false;
+    // },
 };

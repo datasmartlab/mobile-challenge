@@ -1,17 +1,17 @@
 import { createSlice } from '@reduxjs/toolkit';
-import { initialStateProps, reducer } from './reducers';
+import { initialStateProps, reducers } from './reducers';
 
 const initialState: initialStateProps = {
     loading: false,
     data: [],
-    pokemonInfo: { name: '', sprite: '' },
-    pagination: { limit: 20, offset: 0, count: 100 },
+
+    pagination: { limit: 20, offset: 1 },
 };
 
 const pokemonSlice = createSlice({
     name: 'pokemons',
     initialState,
-    reducers: reducer,
+    reducers,
 });
 
 export const { actions } = pokemonSlice;

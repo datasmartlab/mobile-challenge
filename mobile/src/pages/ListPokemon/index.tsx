@@ -2,11 +2,20 @@ import { useEffect, useState } from 'react';
 import { actions } from '../../redux/pokemon/slice';
 import { useDispatch, useSelector } from 'react-redux';
 import { RootState } from '../../redux/store';
-import { View, Text, FlatList, IconButton, Icon, Box } from 'native-base';
+import {
+    View,
+    Text,
+    FlatList,
+    IconButton,
+    Icon,
+    Box,
+    Center,
+} from 'native-base';
 import { TouchableOpacity } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import { PokemonScreenNavigationProp } from '../../routes';
 import { MaterialIcons } from '@expo/vector-icons';
+import { SvgUri } from 'react-native-svg';
 
 function ListPokemons() {
     const navigation = useNavigation<PokemonScreenNavigationProp>();
@@ -82,34 +91,52 @@ function ListPokemons() {
                             </Box>
                             <FlatList
                                 showsVerticalScrollIndicator={false}
-                                marginBottom={3}
+                                marginBottom={72}
                                 data={data}
                                 renderItem={({ item }) => {
                                     return (
                                         <View flex={1} key={item.name}>
                                             <TouchableOpacity
                                                 style={{
-                                                    marginTop: 10,
+                                                    marginVertical: 5,
                                                 }}
                                                 onPress={() => {
                                                     navigation.navigate(
                                                         'pokemon',
                                                         {
-                                                            url: item.url,
+                                                            data: item,
                                                         },
                                                     );
                                                 }}
                                             >
-                                                <Text
-                                                    lineHeight="3.35rem"
-                                                    textAlign="center"
+                                                <Box
+                                                    display="flex"
+                                                    flexDirection="row"
                                                     bg="gray.200"
-                                                    width="100%"
-                                                    fontSize={26}
+                                                    alignItems="flex-start"
                                                     borderRadius={8}
                                                 >
-                                                    {item.name}
-                                                </Text>
+                                                    <SvgUri
+                                                        width="30%"
+                                                        height={128}
+                                                        uri={
+                                                            item.sprites.other
+                                                                .dream_world
+                                                                .front_default
+                                                        }
+                                                    />
+                                                    <Box
+                                                        display="flex"
+                                                        justifyContent="center"
+                                                        alignItems="center"
+                                                        height="100%"
+                                                        width="70%"
+                                                    >
+                                                        <Text fontSize={26}>
+                                                            {item.name}
+                                                        </Text>
+                                                    </Box>
+                                                </Box>
                                             </TouchableOpacity>
                                         </View>
                                     );
