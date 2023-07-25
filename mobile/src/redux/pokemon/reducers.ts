@@ -1,9 +1,18 @@
 import { PayloadAction } from '@reduxjs/toolkit';
 
+interface pokemonStats {
+    base_stat: string;
+    effort: string;
+    stat: {
+        name: string;
+    };
+}
+
 export interface pokemonDTO {
     data: {
         name: string;
         height: number;
+        stats: pokemonStats[];
         sprites: {
             other: {
                 dream_world: { front_default: string };
@@ -13,26 +22,6 @@ export interface pokemonDTO {
         weight: number;
     };
 }
-/*
-name:
-height:
-stats:{
-	0 = hp
-	1 = attack
-	2 = defense
-	3 = special-attack
-	4 = special-defense
-	5 = speed
-}
-type:{
-	1 ou 2
-}
-sprites:{
-	dream_world:{ front_default }
-}
-
-weight:  
-*/
 
 interface paginationData {
     offset: number;
@@ -42,6 +31,7 @@ interface paginationData {
 export interface pokemonData {
     name: string;
     height: number;
+    stats: pokemonStats[];
     sprites: {
         other: {
             dream_world: { front_default: string };
@@ -62,39 +52,25 @@ export const reducers = {
         reducer: (state: initialStateProps) => {
             state.loading = false;
         },
-        prepare: ({ offset, limit }: paginationData) => {
+        prepare: (offset: number, limit: number) => {
             return { payload: { offset, limit } };
         },
     },
 
-    getPokemonsSuccess: (
-        state: initialStateProps,
-        action: PayloadAction<pokemonData[]>,
-    ) => {
-        state.data = action.payload;
-        state.loading = false;
+    getPokemonsSuccess: {
+        reducer: (
+            state: initialStateProps,
+            action: PayloadAction<{ data: pokemonData[] }>,
+        ) => {
+            const { data } = action.payload;
+            state.data = data;
+            state.loading = false;
+        },
+        prepare: (data: pokemonData[]) => {
+            return { payload: { data } };
+        },
     },
-
     getPokemonsFailure: (state: initialStateProps) => {
         state.loading = false;
     },
-
-    // getPokemonInfoRequest: (state: initialStateProps) => {
-    //     state.loading = true;
-    // },
-
-    // getPokemonInfoSuccess: {
-    //     reducer: (
-    //         state: initialStateProps,
-    //         action: PayloadAction<{ data: pokemonData }>,
-    //     ) => {
-    //         state.loading = false;
-    //     },
-    //     prepare: ({ name, sprite }: pokemonData) => {
-    //         return { payload: { data: { name, sprite } } };
-    //     },
-    // },
-    // getPokemonInfoFailure: (state: initialStateProps) => {
-    //     state.loading = false;
-    // },
 };
