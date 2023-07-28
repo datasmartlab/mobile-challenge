@@ -1,9 +1,10 @@
-import { takeLatest, all, call, put } from 'redux-saga/effects';
+import { takeLatest, all, put } from 'redux-saga/effects';
 import { actions } from './slice';
 import { api } from '../../services/pokemon';
-import { pokemonData, pokemonDTO } from './reducers';
+import axios from 'axios';
+import { pokemonDataDTO, pokemonListDTO } from './reducers';
 
-interface FetchProductsAction {
+interface FetchPokemonsListAction {
     type: typeof actions.getPokemonsRequest.type;
     payload: {
         offset: number;
@@ -11,22 +12,47 @@ interface FetchProductsAction {
     };
 }
 
-function* getPokemons({ payload }: FetchProductsAction) {
+function* getPokemons({ payload }: FetchPokemonsListAction) {
     const { getPokemonsFailure, getPokemonsSuccess } = actions;
     const { limit, offset } = payload;
+
     try {
-        // const { data }: { data: { count: number } } = { data: { count: 1500 } };
-        let result: pokemonData[] = [];
+        const response: pokemonListDTO = yield api.get('pokemon', {
+            params: { limit, offset },
+        });
+
         for (let count = 0; count < limit; count++) {
-            const response: pokemonDTO = yield api.get(
-                `pokemon/${offset + count}`,
-            );
-            result.push(response.data);
+            response.data.results[
+                count
+            ].sprite = `https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/dream-world/${
+                offset + count + 1
+            }.svg`;
         }
-        yield put(getPokemonsSuccess(result));
+        console.log;
+        yield put(getPokemonsSuccess(response));
     } catch (error) {
         yield put(getPokemonsFailure());
     }
 }
 
-export default all([takeLatest('pokemons/getPokemonsRequest', getPokemons)]);
+interface FetchPokemonByIdAction {
+    type: typeof actions.getPokemonsRequest.type;
+    payload: {
+        url: string;
+    };
+}
+
+function* getPokemonById({ payload }: FetchPokemonByIdAction) {
+    const { getPokemonByIdSuccess, getPokemonByIdFailure } = actions;
+    try {
+        const response: pokemonDataDTO = yield axios.get(payload.url);
+        yield put(getPokemonByIdSuccess(response));
+    } catch (error) {
+        yield put(getPokemonByIdFailure());
+    }
+}
+
+export default all([
+    takeLatest('pokemons/getPokemonsRequest', getPokemons),
+    takeLatest('pokemons/getPokemonByIdRequest', getPokemonById),
+]);

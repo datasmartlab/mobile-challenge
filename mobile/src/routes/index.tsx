@@ -5,11 +5,10 @@ import {
 } from '@react-navigation/native-stack';
 import ListPokemons from '../pages/ListPokemon';
 import { InfoPokemon } from '../pages/InfoPokemon';
-import { pokemonData } from '../redux/pokemon/reducers';
 
 type RootStackParam = {
     pokemons: undefined;
-    pokemon: { data: pokemonData };
+    pokemon: { url: string };
 };
 
 type Props = NativeStackScreenProps<RootStackParam, 'pokemon'>;
