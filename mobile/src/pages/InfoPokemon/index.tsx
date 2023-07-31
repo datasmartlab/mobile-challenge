@@ -1,5 +1,5 @@
 import { useEffect } from 'react';
-import { View, Text, Center, Toast } from 'native-base';
+import { View, Text, Center } from 'native-base';
 import { useRoute } from '@react-navigation/native';
 import { useDispatch, useSelector } from 'react-redux';
 import { actions } from '../../redux/pokemon/slice';
@@ -8,11 +8,15 @@ import { PokemonScreenRouteProp } from '../../routes';
 import { Loading } from '../../components/Loading';
 import { Card } from './Card';
 import { Image, TouchableOpacity } from 'react-native';
+import { Alert } from '../../components/Alert';
 
 export function InfoPokemon() {
     const dispatch = useDispatch();
+
     const { params } = useRoute<PokemonScreenRouteProp>();
+
     const url = params.url;
+
     const { loading, pokemonInfo, chosenPokemon } = useSelector(
         (state: RootState) => state.pokemons,
     );
@@ -43,31 +47,16 @@ export function InfoPokemon() {
                                                 url,
                                             ),
                                         );
-                                        Toast.show({
-                                            render: () => {
-                                                return (
-                                                    <View
-                                                        bg="success.500"
-                                                        p={2}
-                                                        rounded="md"
-                                                        mb={5}
-                                                    >
-                                                        <Text
-                                                            color="white"
-                                                            fontSize={30}
-                                                        >
-                                                            Pokémon Adicionado
-                                                            com sucesso
-                                                        </Text>
-                                                    </View>
-                                                );
-                                            },
+                                        Alert({
+                                            message:
+                                                'Pokemon Adicionado com sucesso!!',
+                                            color: 'success',
                                         });
                                     } else {
-                                        console.log(
-                                            'Voce ja tem:' +
-                                                chosenPokemon.length,
-                                        );
+                                        Alert({
+                                            message: `Voce já tem: ${chosenPokemon.length} pokémons`,
+                                            color: 'error',
+                                        });
                                     }
                                 }}
                             >
@@ -82,7 +71,9 @@ export function InfoPokemon() {
                         </View>
                     ) : (
                         <Center>
-                            <Text fontSize={34}>Pokemon não encontrado</Text>
+                            <Text fontSize={34} color="red.600">
+                                Pokemon não encontrado
+                            </Text>
                         </Center>
                     )}
                 </>

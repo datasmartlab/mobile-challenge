@@ -2,6 +2,7 @@ import { SvgUri } from 'react-native-svg';
 import { View, Text, Center, Progress } from 'native-base';
 import { pokemonData } from '../../../redux/pokemon/reducers';
 import { colors } from './style';
+import { upperCaseFirstCharacter } from '../../../functions';
 
 interface CardProps {
     data: pokemonData;
@@ -28,7 +29,6 @@ export function Card({ data }: CardProps) {
 
     for (let count = 0; count < data.stats.length; count++) {
         const result = parseInt(data.stats[count].base_stat);
-
         statusPercentageCount(result, count);
     }
 
@@ -62,23 +62,23 @@ export function Card({ data }: CardProps) {
             paddingBottom={4}
             borderRadius={6}
             borderWidth={2}
-            marginBottom={4}
+            shadow={4}
+            marginBottom={1}
         >
             <Center>
-                <Text color="white" bold fontSize={40} marginBottom={5}>
-                    {data.name}
+                <Text bold fontSize={40} marginBottom={4}>
+                    {upperCaseFirstCharacter(data.name)}
                 </Text>
-
                 <SvgUri
                     width={340}
                     height={340}
-                    style={{ backgroundColor: 'white' }}
+                    style={{ backgroundColor: '#fcfcfc' }}
                     uri={data.sprites.other.dream_world.front_default}
                 />
             </Center>
 
             <View paddingX={6}>
-                <Text color="#d4d4d4" bold fontSize={30} marginBottom={2}>
+                <Text bold fontSize={30} marginBottom={2}>
                     Status:
                 </Text>
 
@@ -92,9 +92,8 @@ export function Card({ data }: CardProps) {
                             key={item.stat.name}
                         >
                             <Text
-                                color="#d4d4d4"
                                 paddingX={2}
-                                fontSize={18}
+                                fontSize={20}
                                 key={item.stat.name}
                             >
                                 {item.stat.name} - {item.base_stat}
@@ -102,6 +101,7 @@ export function Card({ data }: CardProps) {
                             <Progress
                                 width={40}
                                 size="sm"
+                                colorScheme="indigo"
                                 value={
                                     statusPercentage[
                                         item.stat

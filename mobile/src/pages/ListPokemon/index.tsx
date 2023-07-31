@@ -8,7 +8,7 @@ import { PokemonScreenNavigationProp } from '../../routes';
 import { actions } from '../../redux/pokemon/slice';
 import { RootState } from '../../redux/store';
 import { Loading } from '../../components/Loading';
-// import {FlashList} from '@shopify/flash-list'
+import { upperCaseFirstCharacter } from '../../functions';
 
 function ListPokemons() {
     const navigation = useNavigation<PokemonScreenNavigationProp>();
@@ -18,15 +18,22 @@ function ListPokemons() {
     const { data, loading, pagination } = useSelector(
         (state: RootState) => state.pokemons,
     );
-
     const [offset, setOffset] = useState(pagination.offset);
     const [limit] = useState(pagination.limit);
 
     useEffect(() => {
-        dispatch(getPokemonsRequest(offset, limit));
+        if (!data.length) {
+            dispatch(getPokemonsRequest(offset, limit));
+        }
     }, [dispatch, getPokemonsRequest, offset, limit]);
 
-    //Animation
+    function handleGetNewPokemons() {
+        if (!loading) {
+            const newOffeset = offset + limit;
+            setOffset(newOffeset);
+            dispatch(getPokemonsRequest(newOffeset, limit));
+        }
+    }
 
     return (
         <View paddingX={2}>
@@ -34,11 +41,7 @@ function ListPokemons() {
             {data.length ? (
                 <FlatList
                     initialNumToRender={20}
-                    onEndReached={() => {
-                        if (!loading) {
-                            setOffset(offset + limit);
-                        }
-                    }}
+                    onEndReached={handleGetNewPokemons}
                     onEndReachedThreshold={0.5}
                     showsVerticalScrollIndicator={true}
                     data={data}
@@ -86,7 +89,9 @@ function ListPokemons() {
                                             width="70%"
                                         >
                                             <Text fontSize={26}>
-                                                {item.name}
+                                                {upperCaseFirstCharacter(
+                                                    item.name,
+                                                )}
                                             </Text>
                                         </Box>
                                     </Box>

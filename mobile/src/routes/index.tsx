@@ -5,9 +5,13 @@ import {
 } from '@react-navigation/native-stack';
 import ListPokemons from '../pages/ListPokemon';
 import { InfoPokemon } from '../pages/InfoPokemon';
+import { Home } from '../pages/Home';
+import { ListCapturePokemons } from '../pages/ListCapturePokemons';
 
 type RootStackParam = {
+    home: undefined;
     pokemons: undefined;
+    capturePokemons: undefined;
     pokemon: { url: string };
 };
 
@@ -35,7 +39,13 @@ export default function Routes() {
 
                     headerTitleAlign: 'center',
                 }}
+                initialRouteName="home"
             >
+                <Stack.Screen
+                    name="home"
+                    options={{ title: 'Tela Incial' }}
+                    component={Home}
+                />
                 <Stack.Screen
                     name="pokemons"
                     options={{ title: 'Lista de Pokémons' }}
@@ -45,6 +55,12 @@ export default function Routes() {
                     name="pokemon"
                     options={{ title: 'Pokémon' }}
                     component={InfoPokemon}
+                />
+
+                <Stack.Screen
+                    name="capturePokemons"
+                    options={{ title: 'Pokémons Capturados' }}
+                    component={ListCapturePokemons}
                 />
             </Stack.Navigator>
         </NavigationContainer>
