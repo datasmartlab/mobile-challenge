@@ -1,8 +1,8 @@
 import { AlertDialog, Button, Center } from 'native-base';
 import { useDispatch } from 'react-redux';
 import { useRef } from 'react';
-import { Alert } from '../../../components/Alert/index';
-import { actions } from '../../../redux/pokemon/slice';
+import { Alert } from '@Components/Alert/index';
+import { actions } from '@Redux/pokemon/slice';
 
 interface DeleteDialogPorps {
     index: number;

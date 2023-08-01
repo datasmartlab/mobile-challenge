@@ -1,6 +1,7 @@
 import { Text, View, Button } from 'native-base';
 import { useNavigation } from '@react-navigation/native';
-import { PokemonScreenNavigationProp } from '../../routes';
+import { PokemonScreenNavigationProp } from '@Routes/index';
+
 export function Home() {
     const navigation = useNavigation<PokemonScreenNavigationProp>();
 

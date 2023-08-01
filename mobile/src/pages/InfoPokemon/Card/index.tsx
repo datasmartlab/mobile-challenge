@@ -1,8 +1,8 @@
 import { SvgUri } from 'react-native-svg';
 import { View, Text, Center, Progress } from 'native-base';
-import { pokemonData } from '../../../redux/pokemon/reducers';
 import { colors } from './style';
-import { upperCaseFirstCharacter } from '../../../functions';
+import { pokemonData } from '@Redux/pokemon/reducers';
+import { upperCaseFirstCharacter } from '@Functions';
 
 interface CardProps {
     data: pokemonData;

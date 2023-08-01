@@ -1,14 +1,14 @@
 import { useEffect } from 'react';
-import { View, Text, Center } from 'native-base';
-import { useRoute } from '@react-navigation/native';
-import { useDispatch, useSelector } from 'react-redux';
-import { actions } from '../../redux/pokemon/slice';
-import { RootState } from '../../redux/store';
-import { PokemonScreenRouteProp } from '../../routes';
-import { Loading } from '../../components/Loading';
-import { Card } from './Card';
 import { Image, TouchableOpacity } from 'react-native';
-import { Alert } from '../../components/Alert';
+import { View, Text, Center } from 'native-base';
+import { useDispatch, useSelector } from 'react-redux';
+import { Card } from './Card';
+import { useRoute } from '@react-navigation/native';
+import { actions } from '@Redux/pokemon/slice';
+import { RootState } from '@Redux/store';
+import { PokemonScreenRouteProp } from '@Routes/index';
+import { Loading } from '@Components/Loading';
+import { Alert } from '@Components/Alert';
 
 export function InfoPokemon() {
     const dispatch = useDispatch();

@@ -1,14 +1,14 @@
 import { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { SvgUri } from 'react-native-svg';
 import { View, Text, Box, FlatList, Image } from 'native-base';
+import { SvgUri } from 'react-native-svg';
 import { TouchableOpacity } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
-import { PokemonScreenNavigationProp } from '../../routes';
-import { actions } from '../../redux/pokemon/slice';
-import { RootState } from '../../redux/store';
-import { Loading } from '../../components/Loading';
-import { upperCaseFirstCharacter } from '../../functions';
+import { PokemonScreenNavigationProp } from '@Routes/index';
+import { actions } from '@Redux/pokemon/slice';
+import { RootState } from '@Redux/store';
+import { Loading } from '@Components/Loading';
+import { upperCaseFirstCharacter } from '@Functions';
 
 function ListPokemons() {
     const navigation = useNavigation<PokemonScreenNavigationProp>();

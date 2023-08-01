@@ -1,7 +1,24 @@
 {
   "extends": "expo/tsconfig.base",
-    "compilerOptions": {
-        "strict": true
-    },
-    "typeRoots": ["./types"],
+  "compilerOptions": {
+    "strict": true,
+    "baseUrl": ".",
+    "paths": {
+      "@Components/*": [
+        "src/components/*"
+      ],
+      "@Redux/*": [
+        "src/redux/*"
+      ],
+      "@Routes/*": [
+        "src/routes/*"
+      ],
+      "@Functions": [
+        "src/functions/index"
+      ],
+    }
+  },
+  "typeRoots": [
+    "./types"
+  ],
 }
